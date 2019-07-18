@@ -253,6 +253,7 @@ if __name__ == "__main__":
                 
                 if data[0:3] == VID_SYNC_HEADER:
                     frameIdx = struct.unpack(">Q", data[3:11])[0]
+                    showImg(allFrames[frameIdx])
                 elif data[0:3] == AUD_SYNC_HEADER:
                     musicPlay = True
                     prevMillis = millis()
@@ -261,15 +262,13 @@ if __name__ == "__main__":
                 if millis() - prevMillis > RECV_MUSIC_TIMEOUT:
                     musicPlay = False
                     prevMillis = millis()
-                
-                showImg(allFrames[frameIdx])
             except socket.timeout:
                 musicPlay = False
                 isWindowShowing = False
                 cv2.destroyAllWindows()
             
             keyIn = cv2.waitKey(16)
-            if keyIn==27 or keyIn == ord('q'):
+            if keyIn==27 or keyIn == ord('q') or keyIn == ord('Q'):
                 break
             if keyIn == ord("f") or keyIn == ord("F"):
                 setFullscreen(not wndIsFS)
